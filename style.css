@@ -905,11 +905,13 @@ input:focus, select:focus {
   }
 
   .brand h1 {
-    font-size: 1.1rem;
+    /* Never clip the wordmark: full "ExpenseFlow" must stay visible.
+       Shrinks only below ~360px so the last letter can't be shaved off. */
+    font-size: min(1.1rem, 4.9vw);
     line-height: 1.2;
     white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    overflow: visible;
+    text-overflow: clip;
   }
 
   .brand .subtitle {
@@ -1364,6 +1366,19 @@ input:focus, select:focus {
   .metric-card {
     min-height: 175px;
     padding: 24px 26px;
+  }
+
+  /* Payment split: no empty band between the title and the three tiles.
+     The grid grows to fill the card and each tile centres its label + amount. */
+  .payment-split-card .split-grid {
+    flex: 1;
+    align-content: stretch;
+  }
+
+  .payment-split-card .split-item {
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 8px;
   }
 
   .metric-value {
