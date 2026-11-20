@@ -843,7 +843,14 @@ input:focus, select:focus {
 }
 
 @media (max-width: 640px) {
-  /* Base: 16px root so rem sizes stay readable and inputs never trigger zoom */
+  /* ==========================================================
+     MOBILE: "Add expense first" compact layout
+     Goal: header + summary stay small so the Add Expense form
+     is visible on the first screen without scrolling.
+     Laptop/desktop styles are NOT touched (see 921px+ block).
+     ========================================================== */
+
+  /* Base: 16px root so inputs never trigger iOS zoom */
   html {
     font-size: 16px;
     -webkit-text-size-adjust: 100%;
@@ -851,12 +858,12 @@ input:focus, select:focus {
   }
 
   body {
-    padding: 12px 12px calc(16px + env(safe-area-inset-bottom));
+    padding: 10px 10px calc(14px + env(safe-area-inset-bottom));
     overflow-x: hidden;
   }
 
   .app-shell {
-    gap: 12px;
+    gap: 10px;
   }
 
   /* Never let a grid/flex child push the page wider than the screen */
@@ -866,28 +873,47 @@ input:focus, select:focus {
   }
 
   .card {
-    padding: 14px;
+    padding: 12px;
+    border-radius: 14px;
   }
 
-  /* ---------- Header: title row + compact 3-button action row ---------- */
+  /* ---------- Header: 2 tidy rows ----------
+     Row 1: brand (left)  | month picker (right)
+     Row 2: status | Drive | Theme | CSV  (4 equal chips) */
   .topbar {
-    padding: 12px 14px;
-    gap: 10px;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    align-items: center;
+    gap: 8px 6px;
+    padding: 10px 12px;
+    border-radius: 14px;
+  }
+
+  .topbar-actions {
+    display: contents;
+  }
+
+  .brand {
+    grid-column: span 2;
+    gap: 8px;
+  }
+
+  .brand-dot {
+    width: 10px;
+    height: 10px;
+    flex-shrink: 0;
   }
 
   .brand h1 {
-    font-size: 1.25rem;
+    font-size: 1.1rem;
+    line-height: 1.2;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .brand .subtitle {
     display: none;
-  }
-
-  .topbar-actions {
-    width: 100%;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 8px;
   }
 
   .month-picker-wrap {
@@ -896,198 +922,217 @@ input:focus, select:focus {
 
   .month-picker-wrap input[type="month"] {
     width: 100%;
-    min-height: 44px;
-    font-size: 1rem;
-    padding: 8px 12px;
+    height: 36px;
+    padding: 4px 10px;
+    font-size: 0.85rem;
+    border-radius: 9px;
   }
 
-  .storage-badge {
-    grid-column: span 1;
+  .storage-badge,
+  .topbar-actions .btn {
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
-    min-height: 44px;
-    padding: 4px 8px;
-    font-size: 0.75rem;
-    line-height: 1.2;
-    border-radius: var(--radius-md);
-  }
-
-  .topbar-actions .btn {
-    min-height: 44px;
-    padding: 8px 6px;
-    font-size: 0.82rem;
-    line-height: 1.2;
+    height: 36px;
+    min-height: 36px;
+    padding: 2px 4px;
+    font-size: 0.68rem;
+    font-weight: 600;
+    line-height: 1.15;
     white-space: normal;
+    border-radius: 9px;
+    overflow: hidden;
   }
 
-  /* ---------- Summary cards: hero balance, budget, then 2-up ---------- */
+  /* ---------- Summary: compact 2x2 + slim split strip ---------- */
   .bento-metrics {
     grid-template-columns: 1fr 1fr;
-    gap: 10px;
+    gap: 8px;
   }
 
   .metric-card {
-    padding: 12px 14px;
+    padding: 10px 12px;
     min-height: 0;
-    gap: 4px;
+    gap: 2px;
+    justify-content: flex-start;
+    border-radius: 12px;
   }
 
-  .accent-balance {
-    grid-column: span 2;
-    order: -2;
-    padding: 16px;
-  }
-
-  .accent-emerald {
-    grid-column: span 2;
-    order: -1;
-  }
-
-  .payment-split-card {
-    grid-column: span 2;
-    padding: 10px;
-  }
+  /* Order: Balance | Budget, then Spent Month | Today, then split */
+  .accent-balance { order: -2; }
+  .accent-emerald { order: -1; }
 
   .metric-label {
-    font-size: 0.75rem;
+    display: block;
+    font-size: 0.64rem;
+    letter-spacing: 0.04em;
+    line-height: 1.3;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .metric-value {
-    font-size: 1.5rem;
-    line-height: 1.2;
+    font-size: 1.2rem;
+    line-height: 1.25;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
+  /* Balance is the number you check most, keep it a touch bolder */
   .accent-balance .metric-value {
-    font-size: 2rem;
+    font-size: 1.3rem;
   }
 
   .metric-sub {
     display: none;
-    font-size: 0.8rem;
-  }
-
-  .accent-balance .metric-sub {
-    display: block;
   }
 
   .budget-progress-wrap {
-    gap: 8px;
-    margin-top: 6px;
+    gap: 0;
+    margin-top: 4px;
   }
 
   .accent-balance .bar-track {
-    height: 10px;
+    height: 5px;
+  }
+
+  /* Budget card: label on top, value left + small edit button right */
+  .accent-emerald .metric-top-row {
+    display: block;
+  }
+
+  .accent-emerald .metric-value {
+    padding-right: 70px;
   }
 
   .mini-edit-btn {
-    min-height: 36px;
-    padding: 6px 12px;
-    font-size: 0.78rem;
-    border-radius: 8px;
+    position: absolute;
+    right: 10px;
+    top: 24px; /* sits on the same line as the budget amount */
+    height: 26px;
+    padding: 0 8px;
+    font-size: 0.66rem;
+    border-radius: 7px;
+    white-space: nowrap;
   }
 
   .reminder-chip {
-    font-size: 0.8rem;
-    padding: 4px 6px 4px 10px;
+    margin-top: 4px;
+    padding: 2px 4px 2px 8px;
+    font-size: 0.66rem;
+    border-radius: 7px;
   }
 
   .reminder-del-btn {
-    min-width: 32px;
-    min-height: 32px;
-    font-size: 0.95rem;
+    min-width: 24px;
+    min-height: 24px;
+    font-size: 0.8rem;
   }
 
-  /* Payment split: three equal tiles, label above amount */
+  /* Payment split: one slim strip of 3 tiles */
+  .payment-split-card {
+    grid-column: span 2;
+    padding: 6px;
+  }
+
   .payment-split-card .metric-label {
     display: none;
   }
 
   .payment-split-card .split-grid {
     margin-top: 0;
-    gap: 8px;
+    gap: 6px;
   }
 
   .payment-split-card .split-item {
-    padding: 10px 6px;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
-    justify-content: center;
-    text-align: center;
-    gap: 2px;
+    justify-content: space-between;
+    gap: 4px;
+    padding: 6px 8px;
+    border-radius: 8px;
   }
 
   .split-tag {
-    font-size: 0.75rem;
+    font-size: 0.64rem;
+    white-space: nowrap;
   }
 
   .payment-split-card .split-item strong {
-    font-size: 1rem;
+    font-size: 0.82rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
-  /* Budget drawer */
+  /* ---------- Budget drawer (opened rarely) ---------- */
   .budget-form-inline {
     flex-direction: column;
     align-items: stretch;
+    gap: 10px;
   }
 
   .budget-form-controls {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
     gap: 8px;
   }
 
   .budget-form-controls input {
+    grid-column: span 2;
     width: 100%;
+    min-height: 44px;
+    font-size: 1rem;
   }
 
   .budget-form-controls .btn {
-    flex: 1 1 calc(50% - 4px);
-    min-height: 44px;
+    min-height: 42px;
+    padding: 8px 6px;
+    font-size: 0.8rem;
   }
 
   /* ---------- Main grid ---------- */
-  .main-grid {
-    gap: 12px;
-  }
-
+  .main-grid,
   .left-column,
   .right-column {
-    gap: 12px;
+    gap: 10px;
+  }
+
+  .card-header {
+    margin-bottom: 10px;
   }
 
   .card-header h3 {
-    font-size: 1.1rem;
+    font-size: 1rem;
   }
 
-  /* ---------- Add Expense form ---------- */
+  /* ---------- Add Expense form: compact but thumb-friendly ---------- */
   .form-card {
-    padding: 16px;
+    padding: 12px;
   }
 
   .form-card .card-header {
-    margin-bottom: 12px;
+    margin-bottom: 8px;
   }
 
   .form-card form {
-    gap: 14px;
+    gap: 10px;
   }
 
   .form-group {
-    gap: 6px;
+    gap: 4px;
   }
 
   .form-group label {
-    font-size: 0.85rem;
+    font-size: 0.74rem;
   }
 
   .form-row {
     grid-template-columns: 1fr 1fr;
-    gap: 10px;
-  }
-
-  /* Date and Note get a full row each so they have room */
-  .form-card form .form-row:last-of-type {
-    grid-template-columns: 1fr;
+    gap: 8px;
   }
 
   input,
@@ -1095,81 +1140,88 @@ input:focus, select:focus {
     width: 100%;
   }
 
+  /* 16px font = no auto-zoom on focus; 42px = comfortable tap */
   .form-card input,
   .form-card select {
-    min-height: 48px;
-    padding: 10px 12px;
+    height: 42px;
+    min-height: 42px;
+    padding: 8px 10px;
     font-size: 1rem;
   }
 
+  .form-card input[type="date"] {
+    padding: 8px 6px 8px 10px;
+  }
+
   .form-card #amount {
-    font-size: 1.15rem;
+    font-size: 1.05rem;
     font-weight: 600;
   }
 
   .pill-group {
-    padding: 4px;
-    gap: 6px;
+    padding: 3px;
+    gap: 4px;
   }
 
   .pill {
-    min-height: 44px;
-    padding: 8px 10px;
-    font-size: 0.95rem;
+    min-height: 36px;
+    padding: 6px 10px;
+    font-size: 0.9rem;
   }
 
   .upi-sub-box {
-    padding: 10px;
+    padding: 8px;
   }
 
   .btn {
-    min-height: 44px;
+    min-height: 42px;
   }
 
   .form-card .full-width {
-    min-height: 50px;
-    padding: 12px;
+    min-height: 46px;
+    padding: 10px;
     font-size: 1rem;
-    margin-top: 4px;
+    margin-top: 2px;
   }
 
   /* ---------- History & filters ---------- */
-  .history-card {
-    padding: 16px;
+  .history-card,
+  .breakdown-card {
+    padding: 12px;
   }
 
   .history-header {
     flex-direction: column;
     align-items: stretch;
+    gap: 8px;
   }
 
   .filters-bar {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
     gap: 8px;
   }
 
   .filters-bar input {
-    flex: 1 1 100%;
+    grid-column: span 2;
     width: 100%;
-  }
-
-  .filters-bar select {
-    flex: 1 1 calc(50% - 4px);
-    width: auto;
   }
 
   .filters-bar input,
   .filters-bar select {
-    min-height: 44px;
+    height: 42px;
+    min-height: 42px;
     font-size: 1rem;
+    padding: 8px 10px;
   }
 
   .subtitle,
   .muted-text {
-    font-size: 0.85rem;
+    font-size: 0.8rem;
   }
 
   .tx-item {
-    padding: 12px;
+    padding: 10px 12px;
     gap: 10px;
   }
 
@@ -1179,48 +1231,53 @@ input:focus, select:focus {
   }
 
   .tx-category {
-    font-size: 1rem;
+    font-size: 0.95rem;
   }
 
   .tx-meta {
-    font-size: 0.85rem;
+    font-size: 0.8rem;
   }
 
   .badge {
-    font-size: 0.75rem;
+    font-size: 0.7rem;
+  }
+
+  .tx-right {
+    gap: 8px;
+    flex-shrink: 0;
   }
 
   .tx-amount {
-    font-size: 1.05rem;
+    font-size: 1rem;
   }
 
   .delete-btn {
-    min-width: 40px;
-    min-height: 40px;
-    font-size: 0.95rem;
+    min-width: 38px;
+    min-height: 38px;
+    font-size: 0.9rem;
   }
 
   .empty-state {
-    font-size: 0.95rem;
-    padding: 20px 0;
+    font-size: 0.9rem;
+    padding: 16px 0;
   }
 
   .bar-top {
-    font-size: 0.92rem;
+    font-size: 0.88rem;
   }
 
   /* ---------- Footer ---------- */
   .app-footer {
     flex-direction: column;
     text-align: center;
-    padding: 14px;
-    font-size: 0.85rem;
+    padding: 12px;
+    font-size: 0.8rem;
   }
 
   .footer-link-btn {
-    min-height: 40px;
+    min-height: 38px;
     padding: 8px 14px;
-    font-size: 0.85rem;
+    font-size: 0.82rem;
   }
 
   /* ---------- Modals ---------- */
