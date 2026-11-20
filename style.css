@@ -843,28 +843,40 @@ input:focus, select:focus {
 }
 
 @media (max-width: 640px) {
+  /* Base: 16px root so rem sizes stay readable and inputs never trigger zoom */
   html {
-    font-size: 14px;
+    font-size: 16px;
     -webkit-text-size-adjust: 100%;
     text-size-adjust: 100%;
   }
 
   body {
-    padding: 8px;
+    padding: 12px 12px calc(16px + env(safe-area-inset-bottom));
+    overflow-x: hidden;
   }
 
   .app-shell {
-    gap: 8px;
+    gap: 12px;
   }
 
-  /* Ultra-Compact Topbar (2 Clean Rows in Chrome & In-App Browsers) */
+  /* Never let a grid/flex child push the page wider than the screen */
+  .app-shell *,
+  .modal-card * {
+    min-width: 0;
+  }
+
+  .card {
+    padding: 14px;
+  }
+
+  /* ---------- Header: title row + compact 3-button action row ---------- */
   .topbar {
-    padding: 8px 12px;
-    gap: 6px;
+    padding: 12px 14px;
+    gap: 10px;
   }
 
   .brand h1 {
-    font-size: 1.05rem;
+    font-size: 1.25rem;
   }
 
   .brand .subtitle {
@@ -872,144 +884,354 @@ input:focus, select:focus {
   }
 
   .topbar-actions {
-    gap: 5px;
-  }
-
-  .topbar-actions .btn,
-  .month-picker-wrap input[type="month"],
-  .storage-badge {
-    padding: 4px 8px;
-    font-size: 0.74rem;
-    white-space: nowrap;
-  }
-
-  /* Compact 2x2 Bento Metrics with Consistent Breathing Room */
-  .bento-metrics {
-    grid-template-columns: 1fr 1fr;
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
     gap: 8px;
   }
 
-  .metric-card {
-    padding: 8px 10px;
-    min-height: 58px;
+  .month-picker-wrap {
+    grid-column: span 2;
+  }
+
+  .month-picker-wrap input[type="month"] {
+    width: 100%;
+    min-height: 44px;
+    font-size: 1rem;
+    padding: 8px 12px;
+  }
+
+  .storage-badge {
+    grid-column: span 1;
+    display: flex;
+    align-items: center;
     justify-content: center;
-    gap: 2px;
+    text-align: center;
+    min-height: 44px;
+    padding: 4px 8px;
+    font-size: 0.75rem;
+    line-height: 1.2;
+    border-radius: var(--radius-md);
+  }
+
+  .topbar-actions .btn {
+    min-height: 44px;
+    padding: 8px 6px;
+    font-size: 0.82rem;
+    line-height: 1.2;
+    white-space: normal;
+  }
+
+  /* ---------- Summary cards: hero balance, budget, then 2-up ---------- */
+  .bento-metrics {
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .metric-card {
+    padding: 12px 14px;
+    min-height: 0;
+    gap: 4px;
+  }
+
+  .accent-balance {
+    grid-column: span 2;
+    order: -2;
+    padding: 16px;
+  }
+
+  .accent-emerald {
+    grid-column: span 2;
+    order: -1;
+  }
+
+  .payment-split-card {
+    grid-column: span 2;
+    padding: 10px;
   }
 
   .metric-label {
-    font-size: 0.64rem;
+    font-size: 0.75rem;
   }
 
   .metric-value {
-    font-size: 1.12rem;
+    font-size: 1.5rem;
     line-height: 1.2;
+  }
+
+  .accent-balance .metric-value {
+    font-size: 2rem;
   }
 
   .metric-sub {
     display: none;
+    font-size: 0.8rem;
+  }
+
+  .accent-balance .metric-sub {
+    display: block;
+  }
+
+  .budget-progress-wrap {
+    gap: 8px;
+    margin-top: 6px;
+  }
+
+  .accent-balance .bar-track {
+    height: 10px;
   }
 
   .mini-edit-btn {
-    padding: 2px 6px;
-    font-size: 0.64rem;
+    min-height: 36px;
+    padding: 6px 12px;
+    font-size: 0.78rem;
+    border-radius: 8px;
   }
 
-  /* Slim Payment Mode Split Bar */
-  .payment-split-card {
-    grid-column: span 2;
-    padding: 6px 10px;
-    min-height: 0;
+  .reminder-chip {
+    font-size: 0.8rem;
+    padding: 4px 6px 4px 10px;
   }
 
+  .reminder-del-btn {
+    min-width: 32px;
+    min-height: 32px;
+    font-size: 0.95rem;
+  }
+
+  /* Payment split: three equal tiles, label above amount */
   .payment-split-card .metric-label {
     display: none;
   }
 
   .payment-split-card .split-grid {
     margin-top: 0;
-    gap: 5px;
+    gap: 8px;
   }
 
   .payment-split-card .split-item {
-    padding: 4px 7px;
-    flex-direction: row;
-    justify-content: space-between;
+    padding: 10px 6px;
+    flex-direction: column;
     align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 2px;
+  }
+
+  .split-tag {
+    font-size: 0.75rem;
   }
 
   .payment-split-card .split-item strong {
-    font-size: 0.78rem;
+    font-size: 1rem;
   }
 
-  /* Compact Add Expense Card so "+ Record Expense" Fits Above the Fold */
+  /* Budget drawer */
+  .budget-form-inline {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .budget-form-controls {
+    gap: 8px;
+  }
+
+  .budget-form-controls input {
+    width: 100%;
+  }
+
+  .budget-form-controls .btn {
+    flex: 1 1 calc(50% - 4px);
+    min-height: 44px;
+  }
+
+  /* ---------- Main grid ---------- */
   .main-grid {
     gap: 12px;
   }
 
+  .left-column,
+  .right-column {
+    gap: 12px;
+  }
+
+  .card-header h3 {
+    font-size: 1.1rem;
+  }
+
+  /* ---------- Add Expense form ---------- */
   .form-card {
-    padding: 9px 11px;
+    padding: 16px;
   }
 
   .form-card .card-header {
-    margin-bottom: 6px;
-  }
-
-  .form-card .card-header h3 {
-    font-size: 0.95rem;
+    margin-bottom: 12px;
   }
 
   .form-card form {
-    gap: 6px;
+    gap: 14px;
   }
 
   .form-group {
-    gap: 3px;
+    gap: 6px;
   }
 
   .form-group label {
-    font-size: 0.72rem;
+    font-size: 0.85rem;
   }
 
   .form-row {
     grid-template-columns: 1fr 1fr;
-    gap: 7px;
+    gap: 10px;
+  }
+
+  /* Date and Note get a full row each so they have room */
+  .form-card form .form-row:last-of-type {
+    grid-template-columns: 1fr;
+  }
+
+  input,
+  select {
+    width: 100%;
   }
 
   .form-card input,
   .form-card select {
-    padding: 7px 9px;
-    font-size: 0.84rem;
+    min-height: 48px;
+    padding: 10px 12px;
+    font-size: 1rem;
+  }
+
+  .form-card #amount {
+    font-size: 1.15rem;
+    font-weight: 600;
   }
 
   .pill-group {
-    padding: 3px;
-    gap: 5px;
+    padding: 4px;
+    gap: 6px;
   }
 
   .pill {
-    padding: 5px 8px;
-    font-size: 0.8rem;
+    min-height: 44px;
+    padding: 8px 10px;
+    font-size: 0.95rem;
+  }
+
+  .upi-sub-box {
+    padding: 10px;
+  }
+
+  .btn {
+    min-height: 44px;
   }
 
   .form-card .full-width {
-    padding: 9px;
-    margin-top: 2px;
+    min-height: 50px;
+    padding: 12px;
+    font-size: 1rem;
+    margin-top: 4px;
+  }
+
+  /* ---------- History & filters ---------- */
+  .history-card {
+    padding: 16px;
+  }
+
+  .history-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .filters-bar {
+    gap: 8px;
+  }
+
+  .filters-bar input {
+    flex: 1 1 100%;
+    width: 100%;
+  }
+
+  .filters-bar select {
+    flex: 1 1 calc(50% - 4px);
+    width: auto;
   }
 
   .filters-bar input,
   .filters-bar select {
-    width: 100%;
+    min-height: 44px;
+    font-size: 1rem;
   }
 
-  /* Scrollable Welcome / Privacy Modal */
+  .subtitle,
+  .muted-text {
+    font-size: 0.85rem;
+  }
+
+  .tx-item {
+    padding: 12px;
+    gap: 10px;
+  }
+
+  .tx-left {
+    flex: 1;
+    overflow-wrap: anywhere;
+  }
+
+  .tx-category {
+    font-size: 1rem;
+  }
+
+  .tx-meta {
+    font-size: 0.85rem;
+  }
+
+  .badge {
+    font-size: 0.75rem;
+  }
+
+  .tx-amount {
+    font-size: 1.05rem;
+  }
+
+  .delete-btn {
+    min-width: 40px;
+    min-height: 40px;
+    font-size: 0.95rem;
+  }
+
+  .empty-state {
+    font-size: 0.95rem;
+    padding: 20px 0;
+  }
+
+  .bar-top {
+    font-size: 0.92rem;
+  }
+
+  /* ---------- Footer ---------- */
+  .app-footer {
+    flex-direction: column;
+    text-align: center;
+    padding: 14px;
+    font-size: 0.85rem;
+  }
+
+  .footer-link-btn {
+    min-height: 40px;
+    padding: 8px 14px;
+    font-size: 0.85rem;
+  }
+
+  /* ---------- Modals ---------- */
   .modal-backdrop {
     padding: 12px;
     align-items: center;
   }
 
   .modal-card {
-    max-height: 86dvh;
-    padding: 16px;
+    max-height: 88dvh;
+    padding: 18px;
     gap: 12px;
     overflow: hidden;
   }
@@ -1019,7 +1241,7 @@ input:focus, select:focus {
   }
 
   .modal-header h2 {
-    font-size: 1.08rem;
+    font-size: 1.15rem;
   }
 
   .modal-body {
@@ -1031,15 +1253,33 @@ input:focus, select:focus {
 
   .welcome-list {
     gap: 8px;
-    font-size: 0.83rem;
+    font-size: 0.92rem;
   }
 
   .welcome-list li {
-    padding: 9px 11px;
+    padding: 10px 12px;
   }
 
   .modal-footer {
     flex-shrink: 0;
+  }
+
+  .modal-footer .btn {
+    min-height: 48px;
+  }
+
+  #budgetPromptModal .modal-footer {
+    flex-direction: column;
+  }
+
+  #budgetPromptModal .modal-footer .btn {
+    flex: none !important;
+    width: 100%;
+  }
+
+  #budgetPromptModal input {
+    min-height: 48px;
+    font-size: 1rem;
   }
 }
 
