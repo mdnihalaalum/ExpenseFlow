@@ -843,15 +843,21 @@ input:focus, select:focus {
 }
 
 @media (max-width: 640px) {
+  html {
+    font-size: 14px;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+
   body {
-    padding: 6px;
+    padding: 8px;
   }
 
   .app-shell {
-    gap: 6px;
+    gap: 8px;
   }
 
-  /* Ultra-Compact Topbar */
+  /* Ultra-Compact Topbar (2 Clean Rows in Chrome & In-App Browsers) */
   .topbar {
     padding: 8px 12px;
     gap: 6px;
@@ -873,18 +879,21 @@ input:focus, select:focus {
   .month-picker-wrap input[type="month"],
   .storage-badge {
     padding: 4px 8px;
-    font-size: 0.72rem;
+    font-size: 0.74rem;
+    white-space: nowrap;
   }
 
-  /* Compact 2x2 Bento Metrics so "+ Record Expense" fits above the fold */
+  /* Compact 2x2 Bento Metrics with Consistent Breathing Room */
   .bento-metrics {
     grid-template-columns: 1fr 1fr;
-    gap: 7px;
+    gap: 8px;
   }
 
   .metric-card {
-    padding: 6px 9px;
-    gap: 1px;
+    padding: 8px 10px;
+    min-height: 58px;
+    justify-content: center;
+    gap: 2px;
   }
 
   .metric-label {
@@ -908,7 +917,8 @@ input:focus, select:focus {
   /* Slim Payment Mode Split Bar */
   .payment-split-card {
     grid-column: span 2;
-    padding: 7px 10px;
+    padding: 6px 10px;
+    min-height: 0;
   }
 
   .payment-split-card .metric-label {
@@ -931,9 +941,13 @@ input:focus, select:focus {
     font-size: 0.78rem;
   }
 
-  /* Compact Add Expense Card so "+ Record Expense" is visible immediately */
+  /* Compact Add Expense Card so "+ Record Expense" Fits Above the Fold */
+  .main-grid {
+    gap: 12px;
+  }
+
   .form-card {
-    padding: 8px 10px;
+    padding: 9px 11px;
   }
 
   .form-card .card-header {
@@ -945,7 +959,7 @@ input:focus, select:focus {
   }
 
   .form-card form {
-    gap: 5px;
+    gap: 6px;
   }
 
   .form-group {
@@ -1028,6 +1042,7 @@ input:focus, select:focus {
     flex-shrink: 0;
   }
 }
+
 /* Desktop & Laptop Edge-to-Edge Spacious Layout (Mobile Unchanged) */
 @media (min-width: 921px) {
   body {
