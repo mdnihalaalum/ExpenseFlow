@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>ExpenseFlow • Modular Expense Tracker</title>
   <link rel="icon" href="data:," />
   <link rel="stylesheet" href="style.css" />
@@ -33,7 +33,7 @@
         </li>
         <li>
           <strong>3. 100% Privacy &amp; Zero-Server Security:</strong><br />
-          ExpenseFlow runs on a zero-server architecture. No developer server, database, or third-party tracker ever collects, reads, or sells your financial data—your numbers stay strictly between your device and your own Google account. <em><br><strong>Note: To keep your local data safe, avoid clearing your browser's site data/cache unless you have backed up to Google Drive or exported a CSV.</strong><em>
+          ExpenseFlow runs on a zero-server architecture. No developer server, database, or third-party tracker ever collects, reads, or sells your financial data—your numbers stay strictly between your device and your own Google account. <em><br><strong>Note: To keep your local data safe, avoid clearing your browser's site data/cache unless you have backed up to Google Drive or exported a CSV.</strong></em>
         </li>
         <li>
           <strong>4. Coming in Future Updates:</strong><br />
@@ -97,19 +97,19 @@
         </div>
       </div>
       <div class="topbar-actions">
-        <div class="month-picker-wrap">
+        <div class="month-picker-wrap" data-mtab="home transactions insights">
           <label for="activeMonthInput" class="sr-only">Active Month</label>
           <input type="month" id="activeMonthInput" title="Switch Month" />
         </div>
-        <span class="storage-badge" id="storageStatus">Saved on Device</span>
-        <button type="button" class="btn btn-drive" id="driveAuthBtn">Backup to Drive</button>
-        <button type="button" class="btn btn-secondary" id="themeToggleBtn" title="Switch Light / Dark Theme">Dark Mode</button>
-        <button type="button" class="btn btn-secondary" id="exportCsvBtn">Export CSV</button>
+        <span class="storage-badge" id="storageStatus" data-mtab="home">Saved on Device</span>
+        <button type="button" class="btn btn-drive" id="driveAuthBtn" data-mtab="home">Backup to Drive</button>
+        <button type="button" class="btn btn-secondary" id="themeToggleBtn" data-mtab="home" title="Switch Light / Dark Theme">Dark Mode</button>
+        <button type="button" class="btn btn-secondary" id="exportCsvBtn" data-mtab="home">Export CSV</button>
       </div>
     </header>
 
     <!-- Optional Google Drive Backup Prompt Banner -->
-    <section class="card drive-prompt-banner hidden" id="drivePromptBanner">
+    <section class="card drive-prompt-banner hidden" id="drivePromptBanner" data-mtab="home">
       <div class="drive-prompt-text">
         <strong>Want to back up your expenses to Google Drive?</strong>
         <span class="muted-text">Your data is already saved safely on this device. Connect Drive only if you want cross-device sync via a single private <code>expense.json</code> file.</span>
@@ -121,8 +121,8 @@
     </section>
 
     <!-- Bento Summary Row (5 Modular Cards) -->
-    <section class="bento-metrics">
-      <article class="card metric-card accent-emerald">
+    <section class="bento-metrics" data-mtab="home insights">
+      <article class="card metric-card accent-emerald" data-mtab="home">
         <div class="metric-top-row">
           <span class="metric-label" id="budgetCardLabel">Monthly Budget</span>
           <button type="button" class="mini-edit-btn" id="editBudgetBtn">+ Add / Edit</button>
@@ -136,7 +136,7 @@
         </div>
       </article>
 
-      <article class="card metric-card accent-balance" id="balanceCard">
+      <article class="card metric-card accent-balance" id="balanceCard" data-mtab="home">
         <span class="metric-label">Total Balance Left</span>
         <h2 class="metric-value" id="remainingBalanceValue">₹0</h2>
         <div class="budget-progress-wrap">
@@ -147,19 +147,19 @@
         </div>
       </article>
 
-      <article class="card metric-card accent-cyan">
+      <article class="card metric-card accent-cyan" data-mtab="insights">
         <span class="metric-label" id="spentMonthLabel">Spent This Month</span>
         <h2 class="metric-value" id="monthTotal">₹0</h2>
         <span class="metric-sub" id="monthCount">0 transactions</span>
       </article>
 
-      <article class="card metric-card accent-violet">
+      <article class="card metric-card accent-violet" data-mtab="insights">
         <span class="metric-label">Spent Today</span>
         <h2 class="metric-value" id="todayTotal">₹0</h2>
         <span class="metric-sub" id="todayDateLabel">Today</span>
       </article>
 
-      <article class="card metric-card payment-split-card">
+      <article class="card metric-card payment-split-card" data-mtab="insights">
         <span class="metric-label">Payment Mode Split</span>
         <div class="split-grid">
           <div class="split-item">
@@ -179,7 +179,7 @@
     </section>
 
     <!-- Inline Monthly Budget Editor Drawer -->
-    <section class="card budget-drawer hidden" id="budgetDrawer">
+    <section class="card budget-drawer hidden" id="budgetDrawer" data-mtab="home">
       <form id="budgetForm" class="budget-form-inline" autocomplete="off">
         <div class="budget-form-text">
           <strong id="budgetDrawerTitle">Manage Monthly Budget (₹)</strong>
@@ -197,10 +197,10 @@
     </section>
 
     <!-- Main Modular Grid -->
-    <main class="main-grid">
+    <main class="main-grid" data-mtab="home transactions insights">
       <!-- Left Column: Quick Add Expense -->
-      <div class="left-column">
-        <section class="card form-card">
+      <div class="left-column" data-mtab="home">
+        <section class="card form-card" data-mtab="home">
           <div class="card-header">
             <h3>Add Expense</h3>
           </div>
@@ -255,11 +255,23 @@
             <button type="submit" class="btn btn-primary full-width">+ Record Expense</button>
           </form>
         </section>
+
+        <!-- Phone only: latest 3 transactions (filled by app.js) -->
+        <section class="card recent-card mobile-only" data-mtab="home">
+          <div class="card-header recent-header">
+            <div>
+              <h3>Recent</h3>
+              <p class="muted-text" id="recentCount">Latest entries</p>
+            </div>
+            <button type="button" class="btn btn-secondary recent-see-all" id="recentSeeAllBtn">See all</button>
+          </div>
+          <div id="recentList" class="transaction-list"></div>
+        </section>
       </div>
 
       <!-- Right Column: Transaction History + Category Breakdown Below -->
-      <div class="right-column">
-        <section class="card history-card">
+      <div class="right-column" data-mtab="transactions insights">
+        <section class="card history-card" data-mtab="transactions">
           <div class="card-header history-header">
             <div>
               <h3>Transaction History</h3>
@@ -291,7 +303,7 @@
         </section>
 
         <!-- Category Breakdown Module (Now Below Transaction History) -->
-        <section class="card breakdown-card">
+        <section class="card breakdown-card" data-mtab="insights">
           <div class="card-header">
             <h3>Category Breakdown</h3>
             <span class="muted-text" id="breakdownMonthLabel">This Month</span>
@@ -299,18 +311,49 @@
           <div id="categoryBars" class="category-bars">
             <p class="empty-state">No expenses recorded yet.</p>
           </div>
+          <!-- Phone only: donut + legend (filled by app.js) -->
+          <div id="categoryDonut" class="category-donut mobile-only"></div>
         </section>
       </div>
     </main>
 
+    <!-- Phone only: More tab (rows are built in app.js, MORE_ITEMS) -->
+    <section class="card more-card mobile-only" data-mtab="more">
+      <div class="card-header">
+        <h3>More</h3>
+      </div>
+      <div id="moreList" class="more-list"></div>
+    </section>
+
     <!-- Developer & Privacy Footer -->
-    <footer class="app-footer">
+    <footer class="app-footer" data-mtab="more">
       <span>&copy; 2026 <strong>ExpenseFlow</strong> &bull; Developed by <strong>Muhammed Nihal Aalum</strong></span>
       <div class="footer-links">
         <button type="button" class="footer-link-btn" id="openGuideBtn">App Info &amp; Privacy</button>
       </div>
     </footer>
   </div>
+
+  <!-- Phone only: bottom tab bar and toast -->
+  <nav class="mobile-tabbar mobile-only" id="mobileTabbar" aria-label="Main sections">
+    <button type="button" class="mobile-tab" data-tab="home">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10v10h13V10"/></svg>
+      <span>Home</span>
+    </button>
+    <button type="button" class="mobile-tab" data-tab="transactions">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13"/><path d="M3.5 6h.01M3.5 12h.01M3.5 18h.01"/></svg>
+      <span>Transactions</span>
+    </button>
+    <button type="button" class="mobile-tab" data-tab="insights">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 15.5A9.5 9.5 0 1 1 8.5 3"/><path d="M22 12A10 10 0 0 0 12 2v10z"/></svg>
+      <span>Insights</span>
+    </button>
+    <button type="button" class="mobile-tab" data-tab="more">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="12" r="1.4"/><circle cx="12" cy="12" r="1.4"/><circle cx="19" cy="12" r="1.4"/></svg>
+      <span>More</span>
+    </button>
+  </nav>
+  <div class="mobile-toast mobile-only" id="mobileToast" role="status" aria-live="polite"></div>
 
   <script src="app.js"></script>
 </body>
