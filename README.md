@@ -1,9 +1,9 @@
-# ExpenseFlow – Personal Expense Tracker (Offline First)
+# TrackYourRupee – Personal Expense Tracker (Offline First)
 
 A lightweight, privacy-focused personal daily ledger built with Vanilla HTML, CSS and JavaScript. Designed to track daily spend on Indian payment modes with Zero backend servers. Optional Single file Google Drive cloud backup.
 
 
-**Live App:** [https://mdnihalaalum.github.io/ExpenseFlow](https://mdnihalaalum.github.io/ExpenseFlow)
+**Live App:** (https://trackyourrupee.vercel.app)
 
 --- ## Main Features
 
