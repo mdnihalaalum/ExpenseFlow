@@ -70,7 +70,9 @@ body {
   gap: 20px;
 }
 
-/* Modals */
+/* ============================================================================
+   MODALS (Responsive for Small Laptops & Mobile — Always Reachable Footer)
+   ============================================================================ */
 .modal-backdrop {
   position: fixed;
   inset: 0;
@@ -89,25 +91,48 @@ body {
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-lg);
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.28);
-  max-width: 540px;
+  max-width: 560px;
   width: 100%;
-  padding: 24px;
+  max-height: min(88dvh, 720px);
+  padding: 20px 22px;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 12px;
+  overflow: hidden;
+}
+
+.modal-header {
+  flex-shrink: 0;
 }
 
 .modal-header h2 {
-  font-size: 1.25rem;
+  font-size: 1.18rem;
   font-weight: 700;
+}
+
+.modal-body {
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding-right: 4px;
+  flex: 1 1 auto;
+}
+
+.modal-footer {
+  flex-shrink: 0;
+}
+
+.modal-footer-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
 }
 
 .welcome-list {
   list-style: none;
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  font-size: 0.9rem;
+  gap: 10px;
+  font-size: 0.88rem;
   color: var(--text-primary);
 }
 
@@ -115,7 +140,7 @@ body {
   background: var(--bg-elevated);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-md);
-  padding: 11px 14px;
+  padding: 10px 13px;
 }
 
 .welcome-list code {
@@ -172,12 +197,67 @@ body {
   gap: 10px;
 }
 
-.month-picker-wrap input[type="month"] {
+/* Custom Status-Driven Month Calendar Control */
+.month-picker-wrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   background: var(--bg-elevated);
-  border: 1px solid var(--border-subtle);
+  border: 1.5px solid var(--border-subtle);
   border-radius: var(--radius-md);
+  padding: 4px 10px;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.month-picker-wrap.status-green {
+  border-color: rgba(5, 150, 105, 0.45);
+}
+
+.month-picker-wrap.status-yellow {
+  border-color: rgba(217, 119, 6, 0.5);
+}
+
+.month-picker-wrap.status-red {
+  border-color: rgba(225, 29, 72, 0.5);
+}
+
+.custom-cal-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  color: var(--accent-emerald);
+}
+
+.month-picker-wrap.status-green .custom-cal-icon {
+  color: var(--accent-emerald);
+}
+
+.month-picker-wrap.status-yellow .custom-cal-icon {
+  color: var(--accent-amber);
+}
+
+.month-picker-wrap.status-red .custom-cal-icon {
+  color: var(--accent-danger);
+}
+
+.custom-cal-icon svg {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.9;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.month-picker-wrap input[type="month"] {
+  background: transparent;
+  border: none;
   color: var(--text-primary);
-  padding: 7px 12px;
+  padding: 3px 2px;
   font-size: 0.85rem;
   font-weight: 600;
   color-scheme: var(--scheme);
@@ -262,7 +342,9 @@ body {
   flex-wrap: wrap;
 }
 
-/* Bento Cards */
+/* ============================================================================
+   PHASE 2: 3 MERGED SUMMARY MODULES & SHARED CARD HEADERS
+   ============================================================================ */
 .card {
   background: var(--bg-card);
   border: 1px solid var(--border-subtle);
@@ -271,58 +353,124 @@ body {
   padding: 18px;
 }
 
-.bento-metrics {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr) 1.35fr;
-  gap: 14px;
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
 }
 
-.metric-card {
+.card-header h3 {
+  font-size: 1.02rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.summary-three-grid {
+  display: grid;
+  grid-template-columns: 1.15fr 1.15fr 0.9fr;
+  gap: 16px;
+}
+
+.summary-module {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  gap: 6px;
+  gap: 10px;
   position: relative;
   overflow: hidden;
 }
 
-.accent-cyan::before,
-.accent-violet::before,
-.accent-emerald::before,
-.accent-balance::before {
+.summary-module::before {
   content: '';
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 3px;
-}
-
-.accent-emerald::before {
-  background: linear-gradient(90deg, var(--accent-emerald), transparent);
-}
-
-.accent-balance::before {
-  background: linear-gradient(90deg, var(--accent-amber), transparent);
-}
-
-.accent-balance.over-budget-card::before {
-  background: linear-gradient(90deg, var(--accent-danger), transparent);
-}
-
-.accent-cyan::before {
   background: linear-gradient(90deg, var(--accent-cyan), transparent);
 }
 
-.accent-violet::before {
+.wallet-module.status-green::before {
+  background: linear-gradient(90deg, var(--accent-emerald), transparent);
+}
+
+.wallet-module.status-yellow::before {
+  background: linear-gradient(90deg, var(--accent-amber), transparent);
+}
+
+.wallet-module.status-red::before {
+  background: linear-gradient(90deg, var(--accent-danger), transparent);
+}
+
+.spending-module::before {
   background: linear-gradient(90deg, var(--accent-violet), transparent);
 }
 
-.metric-top-row {
+.module-header {
+  margin-bottom: 4px;
+}
+
+.module-header-right {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
+}
+
+/* Status Pills (On track / Careful / Over) */
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 9px;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.status-pill::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.status-pill.status-green {
+  background: rgba(5, 150, 105, 0.14);
+  color: var(--accent-emerald);
+  border: 1px solid rgba(5, 150, 105, 0.3);
+}
+
+.status-pill.status-yellow {
+  background: rgba(217, 119, 6, 0.14);
+  color: var(--accent-amber);
+  border: 1px solid rgba(217, 119, 6, 0.35);
+}
+
+.status-pill.status-red {
+  background: rgba(225, 29, 72, 0.14);
+  color: var(--accent-danger);
+  border: 1px solid rgba(225, 29, 72, 0.35);
+}
+
+.module-split-two {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  align-items: end;
+}
+
+.stat-block {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.stat-block-right {
+  text-align: right;
 }
 
 .mini-edit-btn {
@@ -330,8 +478,8 @@ body {
   color: var(--accent-emerald);
   border: 1px solid rgba(5, 150, 105, 0.35);
   border-radius: 6px;
-  padding: 3px 8px;
-  font-size: 0.7rem;
+  padding: 4px 8px;
+  font-size: 0.72rem;
   font-weight: 600;
   cursor: pointer;
 }
@@ -340,13 +488,13 @@ body {
   background: rgba(5, 150, 105, 0.14);
 }
 
-/* Active Reminder Chip inside Budget Card */
+/* Active Reminder Chip inside Wallet Card */
 .reminder-chip {
   display: inline-flex;
   align-items: center;
   justify-content: space-between;
   gap: 8px;
-  margin-top: 4px;
+  margin-top: 2px;
   padding: 4px 9px;
   border-radius: 8px;
   background: rgba(217, 119, 6, 0.12);
@@ -367,40 +515,36 @@ body {
   line-height: 1;
 }
 
-.reminder-del-btn:hover {
-  opacity: 0.75;
-}
-
 .budget-progress-wrap {
   display: flex;
   flex-direction: column;
-  gap: 5px;
-  margin-top: 2px;
+  gap: 4px;
 }
 
 .text-danger {
   color: var(--accent-danger) !important;
 }
 
-.text-emerald {
-  color: var(--accent-emerald) !important;
-}
-
 .metric-label {
-  font-size: 0.76rem;
+  font-size: 0.72rem;
   color: var(--text-muted);
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.04em;
   font-weight: 600;
 }
 
 .metric-value {
-  font-size: 1.6rem;
+  font-size: 1.55rem;
   font-weight: 700;
+  line-height: 1.2;
+}
+
+.metric-value-secondary {
+  font-size: 1.3rem;
 }
 
 .metric-sub {
-  font-size: 0.78rem;
+  font-size: 0.76rem;
   color: var(--text-muted);
 }
 
@@ -441,7 +585,6 @@ body {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 8px;
-  margin-top: 6px;
 }
 
 .split-item {
@@ -455,7 +598,7 @@ body {
 }
 
 .split-item strong {
-  font-size: 0.9rem;
+  font-size: 0.92rem;
 }
 
 .split-tag {
@@ -480,18 +623,6 @@ body {
   display: flex;
   flex-direction: column;
   gap: 20px;
-}
-
-.card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 16px;
-}
-
-.card-header h3 {
-  font-size: 1.05rem;
-  font-weight: 600;
 }
 
 /* Form Elements */
@@ -643,7 +774,17 @@ input:focus, select:focus {
   margin-top: 4px;
 }
 
-/* Category Bars */
+.form-submit-row {
+  display: flex;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.submit-expense-btn {
+  flex: 1;
+}
+
+/* Category Bars & Status Progress Strip */
 .category-bars {
   display: flex;
   flex-direction: column;
@@ -674,9 +815,18 @@ input:focus, select:focus {
   height: 100%;
   background: linear-gradient(90deg, var(--accent-cyan), var(--accent-violet));
   border-radius: 999px;
-  transition: width 0.3s ease;
+  transition: width 0.3s ease, background-color 0.2s ease;
 }
 
+.bar-fill.status-green {
+  background: var(--accent-emerald);
+}
+
+.bar-fill.status-yellow {
+  background: var(--accent-amber);
+}
+
+.bar-fill.status-red,
 .bar-fill.over-budget {
   background: var(--accent-danger);
 }
@@ -826,10 +976,10 @@ input:focus, select:focus {
   background: rgba(2, 132, 199, 0.08);
 }
 
-/* Responsive */
+/* Responsive Breakpoints */
 @media (max-width: 1140px) {
-  .bento-metrics {
-    grid-template-columns: repeat(3, 1fr);
+  .summary-three-grid {
+    grid-template-columns: 1fr 1fr;
   }
   .payment-split-card {
     grid-column: span 2;
@@ -842,15 +992,136 @@ input:focus, select:focus {
   }
 }
 
-@media (max-width: 640px) {
-  /* ==========================================================
-     MOBILE: "Add expense first" compact layout
-     Goal: header + summary stay small so the Add Expense form
-     is visible on the first screen without scrolling.
-     Laptop/desktop styles are NOT touched (see 921px+ block).
-     ========================================================== */
+@media (min-width: 641px) {
+  .mobile-only {
+    display: none !important;
+  }
 
-  /* Base: 16px root so inputs never trigger iOS zoom */
+  body {
+    padding-left: max(20px, env(safe-area-inset-left));
+    padding-right: max(20px, env(safe-area-inset-right));
+  }
+}
+
+/* Desktop & Laptop Spacious Layout */
+@media (min-width: 921px) {
+  body {
+    padding: 22px 32px;
+    padding-left: max(32px, env(safe-area-inset-left));
+    padding-right: max(32px, env(safe-area-inset-right));
+  }
+
+  .app-shell {
+    max-width: 100%;
+    width: 100%;
+    gap: 24px;
+  }
+
+  .topbar {
+    padding: 18px 28px;
+  }
+
+  .summary-three-grid {
+    gap: 20px;
+  }
+
+  .summary-module {
+    min-height: 170px;
+    padding: 22px 24px;
+  }
+
+  .payment-split-card .split-grid {
+    flex: 1;
+    grid-template-columns: 1fr;
+    align-content: stretch;
+    gap: 8px;
+  }
+
+  .payment-split-card .split-item {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 8px 12px;
+  }
+
+  .payment-split-card .split-tag {
+    font-size: 0.85rem;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+  }
+
+  .payment-split-card .split-item strong {
+    font-size: 1.25rem;
+    line-height: 1.15;
+    white-space: nowrap;
+  }
+
+  .metric-value {
+    font-size: 1.85rem;
+  }
+
+  .metric-value-secondary {
+    font-size: 1.45rem;
+  }
+
+  .main-grid {
+    grid-template-columns: 450px 1fr;
+    gap: 24px;
+  }
+
+  .left-column,
+  .right-column {
+    gap: 24px;
+  }
+
+  .form-card {
+    padding: 28px;
+  }
+
+  .form-card form {
+    gap: 20px;
+  }
+
+  .form-card input,
+  .form-card select {
+    padding: 12px 14px;
+    font-size: 0.98rem;
+  }
+
+  .history-card,
+  .breakdown-card {
+    padding: 26px;
+  }
+
+  .app-footer {
+    padding: 18px 28px;
+  }
+}
+
+/* ============================================================================
+   MOBILE LAYOUT & PHASE 1 SHORTCUTS (≤ 640px)
+   ============================================================================ */
+@media (max-width: 640px) {
+  :root {
+    --tabbar-h: 64px;
+    --cat-food: #0ea5e9;
+    --cat-travel: #7c3aed;
+    --cat-room: #0d9488;
+    --cat-study: #db2777;
+    --cat-shopping: #ea580c;
+    --cat-other: #64748b;
+  }
+
+  [data-theme="dark"] {
+    --cat-food: #38bdf8;
+    --cat-travel: #a78bfa;
+    --cat-room: #2dd4bf;
+    --cat-study: #f472b6;
+    --cat-shopping: #fb923c;
+    --cat-other: #94a3b8;
+  }
+
   html {
     font-size: 16px;
     -webkit-text-size-adjust: 100%;
@@ -858,7 +1129,7 @@ input:focus, select:focus {
   }
 
   body {
-    padding: 10px 10px calc(14px + env(safe-area-inset-bottom));
+    padding: 10px 10px calc(var(--tabbar-h) + 20px + env(safe-area-inset-bottom));
     overflow-x: hidden;
   }
 
@@ -866,7 +1137,6 @@ input:focus, select:focus {
     gap: 10px;
   }
 
-  /* Never let a grid/flex child push the page wider than the screen */
   .app-shell *,
   .modal-card * {
     min-width: 0;
@@ -877,9 +1147,15 @@ input:focus, select:focus {
     border-radius: 14px;
   }
 
-  /* ---------- Header: 2 tidy rows ----------
-     Row 1: brand (left)  | month picker (right)
-     Row 2: status | Drive | Theme | CSV  (4 equal chips) */
+  /* Tab visibility */
+  body[data-mobile-tab="home"] [data-mtab]:not([data-mtab~="home"]),
+  body[data-mobile-tab="transactions"] [data-mtab]:not([data-mtab~="transactions"]),
+  body[data-mobile-tab="insights"] [data-mtab]:not([data-mtab~="insights"]),
+  body[data-mobile-tab="more"] [data-mtab]:not([data-mtab~="more"]) {
+    display: none !important;
+  }
+
+  /* Header */
   .topbar {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -905,13 +1181,9 @@ input:focus, select:focus {
   }
 
   .brand h1 {
-    /* Never clip the wordmark: full "ExpenseFlow" must stay visible.
-       Shrinks only below ~360px so the last letter can't be shaved off. */
     font-size: min(1.1rem, 4.9vw);
     line-height: 1.2;
     white-space: nowrap;
-    overflow: visible;
-    text-overflow: clip;
   }
 
   .brand .subtitle {
@@ -920,14 +1192,15 @@ input:focus, select:focus {
 
   .month-picker-wrap {
     grid-column: span 2;
+    height: 36px;
+    padding: 4px 8px;
+    border-radius: 9px;
   }
 
   .month-picker-wrap input[type="month"] {
     width: 100%;
-    height: 36px;
-    padding: 4px 10px;
-    font-size: 0.85rem;
-    border-radius: 9px;
+    padding: 2px;
+    font-size: 0.84rem;
   }
 
   .storage-badge,
@@ -947,131 +1220,30 @@ input:focus, select:focus {
     overflow: hidden;
   }
 
-  /* ---------- Summary: compact 2x2 + slim split strip ---------- */
-  .bento-metrics {
-    grid-template-columns: 1fr 1fr;
+  /* 3 Summary Modules on Mobile */
+  .summary-three-grid {
+    grid-template-columns: 1fr;
     gap: 8px;
   }
 
-  .metric-card {
-    padding: 10px 12px;
-    min-height: 0;
-    gap: 2px;
-    justify-content: flex-start;
-    border-radius: 12px;
+  .payment-split-card {
+    grid-column: span 1;
   }
 
-  /* Natural order: Budget | Balance, then Spent Month | Today, then split */
-
-  .metric-label {
-    display: block;
-    font-size: 0.64rem;
-    letter-spacing: 0.04em;
-    line-height: 1.3;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+  .summary-module {
+    padding: 11px 12px;
+    gap: 8px;
   }
 
   .metric-value {
-    font-size: 1.2rem;
-    line-height: 1.25;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  /* Balance is the number you check most, keep it a touch bolder */
-  .accent-balance .metric-value {
     font-size: 1.3rem;
   }
 
-  .metric-sub {
-    display: none;
+  .metric-value-secondary {
+    font-size: 1.12rem;
   }
 
-  .budget-progress-wrap {
-    gap: 0;
-    margin-top: 4px;
-  }
-
-  .accent-balance .bar-track {
-    height: 5px;
-  }
-
-  /* Budget card: label on top, value left + small edit button right */
-  .accent-emerald .metric-top-row {
-    display: block;
-  }
-
-  .accent-emerald .metric-value {
-    padding-right: 70px;
-  }
-
-  .mini-edit-btn {
-    position: absolute;
-    right: 10px;
-    top: 24px; /* sits on the same line as the budget amount */
-    height: 26px;
-    padding: 0 8px;
-    font-size: 0.66rem;
-    border-radius: 7px;
-    white-space: nowrap;
-  }
-
-  .reminder-chip {
-    margin-top: 4px;
-    padding: 2px 4px 2px 8px;
-    font-size: 0.66rem;
-    border-radius: 7px;
-  }
-
-  .reminder-del-btn {
-    min-width: 24px;
-    min-height: 24px;
-    font-size: 0.8rem;
-  }
-
-  /* Payment split: one slim strip of 3 tiles */
-  .payment-split-card {
-    grid-column: span 2;
-    padding: 6px;
-  }
-
-  .payment-split-card .metric-label {
-    display: none;
-  }
-
-  .payment-split-card .split-grid {
-    margin-top: 0;
-    gap: 6px;
-  }
-
-  .payment-split-card .split-item {
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    gap: 1px;
-    padding: 5px 4px;
-    border-radius: 8px;
-  }
-
-  .split-tag {
-    font-size: 0.64rem;
-    white-space: nowrap;
-  }
-
-  /* Full amount always visible (no "..." cut-off) */
-  .payment-split-card .split-item strong {
-    font-size: 0.86rem;
-    line-height: 1.2;
-    white-space: nowrap;
-    overflow: visible;
-    text-overflow: clip;
-  }
-
-  /* ---------- Budget drawer (opened rarely) ---------- */
+  /* Budget drawer */
   .budget-form-inline {
     flex-direction: column;
     align-items: stretch;
@@ -1097,40 +1269,15 @@ input:focus, select:focus {
     font-size: 0.8rem;
   }
 
-  /* ---------- Main grid ---------- */
+  /* Main Grid & Form */
   .main-grid,
   .left-column,
   .right-column {
     gap: 10px;
   }
 
-  .card-header {
-    margin-bottom: 10px;
-  }
-
-  .card-header h3 {
-    font-size: 1rem;
-  }
-
-  /* ---------- Add Expense form: compact but thumb-friendly ---------- */
-  .form-card {
-    padding: 12px;
-  }
-
-  .form-card .card-header {
-    margin-bottom: 8px;
-  }
-
   .form-card form {
     gap: 10px;
-  }
-
-  .form-group {
-    gap: 4px;
-  }
-
-  .form-group label {
-    font-size: 0.74rem;
   }
 
   .form-row {
@@ -1143,22 +1290,12 @@ input:focus, select:focus {
     width: 100%;
   }
 
-  /* 16px font = no auto-zoom on focus; 42px = comfortable tap */
   .form-card input,
   .form-card select {
     height: 42px;
     min-height: 42px;
     padding: 8px 10px;
     font-size: 1rem;
-  }
-
-  .form-card input[type="date"] {
-    padding: 8px 6px 8px 10px;
-  }
-
-  .form-card #amount {
-    font-size: 1.05rem;
-    font-weight: 600;
   }
 
   .pill-group {
@@ -1172,27 +1309,157 @@ input:focus, select:focus {
     font-size: 0.9rem;
   }
 
-  .upi-sub-box {
-    padding: 8px;
-  }
-
   .btn {
     min-height: 42px;
   }
 
-  .form-card .full-width {
+  .btn-quick-add {
+    min-height: 34px;
+    padding: 5px 11px;
+    font-size: 0.8rem;
+    background: rgba(2, 132, 199, 0.12);
+    color: var(--accent-cyan);
+    border: 1px solid rgba(2, 132, 199, 0.35);
+    border-radius: 999px;
+  }
+
+  .form-submit-row {
+    display: grid;
+    grid-template-columns: 1.35fr 1fr;
+    gap: 8px;
+  }
+
+  .submit-expense-btn,
+  .save-shortcut-btn {
     min-height: 46px;
-    padding: 10px;
+    padding: 10px 8px;
+    font-size: 0.9rem;
+  }
+
+  /* Shortcuts Modal & List */
+  .shortcuts-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .icon-close-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    border: 1px solid var(--border-subtle);
+    background: var(--bg-elevated);
+    color: var(--text-primary);
     font-size: 1rem;
-    margin-top: 2px;
+    cursor: pointer;
   }
 
-  /* ---------- History & filters ---------- */
-  .history-card,
-  .breakdown-card {
+  .shortcuts-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .shortcut-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    background: var(--bg-elevated);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    padding: 8px 10px;
+  }
+
+  .shortcut-tap-area {
+    flex: 1;
+    background: transparent;
+    border: none;
+    color: var(--text-primary);
+    text-align: left;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  .shortcut-main {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    font-size: 0.94rem;
+  }
+
+  .shortcut-amt {
+    color: var(--accent-cyan);
+    font-weight: 700;
+  }
+
+  .shortcut-sub {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.78rem;
+    color: var(--text-muted);
+  }
+
+  .shortcut-controls {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex-shrink: 0;
+  }
+
+  .sc-icon-btn {
+    width: 32px;
+    height: 34px;
+    border-radius: 8px;
+    border: 1px solid var(--border-subtle);
+    background: var(--bg-card);
+    color: var(--text-primary);
+    font-size: 0.85rem;
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  .sc-icon-btn:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+  }
+
+  .sc-icon-btn.sc-del {
+    color: var(--accent-danger);
+    border-color: rgba(225, 29, 72, 0.3);
+  }
+
+  .shortcut-editor-box {
+    background: var(--bg-elevated);
+    border: 1px solid rgba(2, 132, 199, 0.35);
+    border-radius: var(--radius-md);
     padding: 12px;
+    margin-bottom: 12px;
   }
 
+  .shortcut-editor-box h4 {
+    font-size: 0.9rem;
+    margin-bottom: 8px;
+  }
+
+  .shortcut-editor-box input,
+  .shortcut-editor-box select {
+    height: 40px;
+    font-size: 0.95rem;
+    padding: 6px 10px;
+  }
+
+  .shortcut-editor-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 10px;
+  }
+
+  /* History & Filters */
   .history-header {
     flex-direction: column;
     align-items: stretch;
@@ -1218,288 +1485,6 @@ input:focus, select:focus {
     padding: 8px 10px;
   }
 
-  .subtitle,
-  .muted-text {
-    font-size: 0.8rem;
-  }
-
-  .tx-item {
-    padding: 10px 12px;
-    gap: 10px;
-  }
-
-  .tx-left {
-    flex: 1;
-    overflow-wrap: anywhere;
-  }
-
-  .tx-category {
-    font-size: 0.95rem;
-  }
-
-  .tx-meta {
-    font-size: 0.8rem;
-  }
-
-  .badge {
-    font-size: 0.7rem;
-  }
-
-  .tx-right {
-    gap: 8px;
-    flex-shrink: 0;
-  }
-
-  .tx-amount {
-    font-size: 1rem;
-  }
-
-  .delete-btn {
-    min-width: 38px;
-    min-height: 38px;
-    font-size: 0.9rem;
-  }
-
-  .empty-state {
-    font-size: 0.9rem;
-    padding: 16px 0;
-  }
-
-  .bar-top {
-    font-size: 0.88rem;
-  }
-
-  /* ---------- Footer ---------- */
-  .app-footer {
-    flex-direction: column;
-    text-align: center;
-    padding: 12px;
-    font-size: 0.8rem;
-  }
-
-  .footer-link-btn {
-    min-height: 38px;
-    padding: 8px 14px;
-    font-size: 0.82rem;
-  }
-
-  /* ---------- Modals ---------- */
-  .modal-backdrop {
-    padding: 12px;
-    align-items: center;
-  }
-
-  .modal-card {
-    max-height: 88dvh;
-    padding: 18px;
-    gap: 12px;
-    overflow: hidden;
-  }
-
-  .modal-header {
-    flex-shrink: 0;
-  }
-
-  .modal-header h2 {
-    font-size: 1.15rem;
-  }
-
-  .modal-body {
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-    padding-right: 4px;
-    flex: 1 1 auto;
-  }
-
-  .welcome-list {
-    gap: 8px;
-    font-size: 0.92rem;
-  }
-
-  .welcome-list li {
-    padding: 10px 12px;
-  }
-
-  .modal-footer {
-    flex-shrink: 0;
-  }
-
-  .modal-footer .btn {
-    min-height: 48px;
-  }
-
-  #budgetPromptModal .modal-footer {
-    flex-direction: column;
-  }
-
-  #budgetPromptModal .modal-footer .btn {
-    flex: none !important;
-    width: 100%;
-  }
-
-  #budgetPromptModal input {
-    min-height: 48px;
-    font-size: 1rem;
-  }
-}
-
-/* Desktop & Laptop Edge-to-Edge Spacious Layout (Mobile Unchanged) */
-@media (min-width: 921px) {
-  body {
-    padding: 24px 32px;
-  }
-
-  .app-shell {
-    max-width: 100%;
-    width: 100%;
-    gap: 28px;
-  }
-
-  .topbar {
-    padding: 22px 30px;
-  }
-
-  .bento-metrics {
-    gap: 20px;
-  }
-
-  .metric-card {
-    min-height: 175px;
-    padding: 24px 26px;
-  }
-
-  /* Payment split: the three modes stack as rows so the text can be big.
-     Rows fill the card height, label on the left, amount on the right. */
-  .payment-split-card .split-grid {
-    flex: 1;
-    grid-template-columns: 1fr;
-    align-content: stretch;
-    gap: 8px;
-  }
-
-  .payment-split-card .split-item {
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    gap: 10px;
-    padding: 8px 12px;
-  }
-
-  .payment-split-card .split-tag {
-    font-size: 0.85rem;
-    letter-spacing: 0.04em;
-    white-space: nowrap;
-  }
-
-  .payment-split-card .split-item strong {
-    font-size: 1.35rem;
-    line-height: 1.15;
-    white-space: nowrap;
-  }
-
-  .metric-value {
-    font-size: 2rem;
-  }
-
-  .main-grid {
-    grid-template-columns: 460px 1fr;
-    gap: 28px;
-  }
-
-  .left-column,
-  .right-column {
-    gap: 28px;
-  }
-
-  .form-card {
-    padding: 32px 28px;
-    min-height: 540px;
-  }
-
-  .form-card form {
-    gap: 22px;
-  }
-
-  .form-card input,
-  .form-card select {
-    padding: 13px 15px;
-    font-size: 1rem;
-  }
-
-  .history-card {
-    padding: 28px;
-    min-height: 460px;
-  }
-
-  .breakdown-card {
-    padding: 28px;
-    min-height: 320px;
-  }
-
-  .app-footer {
-    margin-top: 8px;
-    padding: 20px 30px;
-  }
-}
-
-/* ============================================================================
-   [MOBILE TABS] BOTTOM TAB BAR — PHONES ONLY (≤ 640px)
-   New elements carry .mobile-only and are switched off above 640px.
-   Which section shows on which tab: data-mtab="..." in index.html.
-   ============================================================================ */
-@media (min-width: 641px) {
-  .mobile-only {
-    display: none !important;
-  }
-
-  /* viewport-fit=cover guard: env() is 0 on laptops/tablets, so this equals the old padding */
-  body {
-    padding-left: max(20px, env(safe-area-inset-left));
-    padding-right: max(20px, env(safe-area-inset-right));
-  }
-}
-
-@media (min-width: 921px) {
-  body {
-    padding-left: max(32px, env(safe-area-inset-left));
-    padding-right: max(32px, env(safe-area-inset-right));
-  }
-}
-
-@media (max-width: 640px) {
-  :root {
-    --tabbar-h: 64px;
-    --cat-food: #0ea5e9;      /* sky blue */
-    --cat-travel: #7c3aed;    /* violet */
-    --cat-room: #0d9488;      /* teal */
-    --cat-study: #db2777;     /* pink */
-    --cat-shopping: #ea580c;  /* orange */
-    --cat-other: #64748b;     /* slate grey */
-  }
-
-  [data-theme="dark"] {
-    --cat-food: #38bdf8;
-    --cat-travel: #a78bfa;
-    --cat-room: #2dd4bf;
-    --cat-study: #f472b6;
-    --cat-shopping: #fb923c;
-    --cat-other: #94a3b8;
-  }
-
-  /* ---------- Show only the active tab's sections ---------- */
-  body[data-mobile-tab="home"] [data-mtab]:not([data-mtab~="home"]),
-  body[data-mobile-tab="transactions"] [data-mtab]:not([data-mtab~="transactions"]),
-  body[data-mobile-tab="insights"] [data-mtab]:not([data-mtab~="insights"]),
-  body[data-mobile-tab="more"] [data-mtab]:not([data-mtab~="more"]) {
-    display: none !important;
-  }
-
-  /* Room for the fixed tab bar so it never covers the last item */
-  body {
-    padding-bottom: calc(var(--tabbar-h) + 20px + env(safe-area-inset-bottom));
-  }
-
-  /* Full list scrolls with the page instead of inside a box */
   .transaction-list {
     max-height: none;
     overflow: visible;
@@ -1510,7 +1495,7 @@ input:focus, select:focus {
     min-height: 44px;
   }
 
-  /* ---------- Tab bar ---------- */
+  /* Bottom Tab Bar */
   .mobile-tabbar {
     position: fixed;
     left: 0;
@@ -1537,7 +1522,6 @@ input:focus, select:focus {
     align-items: center;
     justify-content: center;
     gap: 3px;
-    min-width: 0;
     min-height: 52px;
     padding: 4px 2px;
     background: transparent;
@@ -1546,17 +1530,8 @@ input:focus, select:focus {
     color: var(--text-muted);
     font-size: 0.75rem;
     font-weight: 600;
-    line-height: 1.1;
     cursor: pointer;
     -webkit-tap-highlight-color: transparent;
-    transition: color 0.15s ease, background-color 0.15s ease;
-  }
-
-  .mobile-tab span {
-    max-width: 100%;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
   }
 
   .mobile-tab svg {
@@ -1574,21 +1549,23 @@ input:focus, select:focus {
     background: rgba(2, 132, 199, 0.1);
   }
 
-  /* ---------- Toast ---------- */
+  /* Interactive Toast with Undo */
   .mobile-toast {
     position: fixed;
     left: 50%;
     bottom: calc(var(--tabbar-h) + 14px + env(safe-area-inset-bottom));
-    z-index: 950;
-    max-width: calc(100% - 32px);
-    padding: 10px 18px;
+    z-index: 1100;
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    max-width: calc(100% - 28px);
+    padding: 10px 16px;
     border-radius: 999px;
     background: var(--text-primary);
     color: var(--bg-card);
-    font-size: 0.85rem;
+    font-size: 0.86rem;
     font-weight: 600;
-    text-align: center;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.22);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
     opacity: 0;
     pointer-events: none;
     transform: translate(-50%, 8px);
@@ -1597,26 +1574,29 @@ input:focus, select:focus {
 
   .mobile-toast.show {
     opacity: 1;
+    pointer-events: auto;
     transform: translate(-50%, 0);
   }
 
-  /* ---------- Home: Recent card ---------- */
-  .recent-card {
-    padding: 12px;
+  .toast-undo-btn {
+    background: var(--accent-cyan);
+    color: var(--btn-primary-text);
+    border: none;
+    border-radius: 999px;
+    padding: 4px 11px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    cursor: pointer;
   }
 
-  .recent-header {
-    gap: 10px;
-  }
-
+  /* Recent & Donut */
   .recent-see-all {
     flex-shrink: 0;
-    min-height: 44px;
-    padding: 8px 14px;
-    font-size: 0.85rem;
+    min-height: 38px;
+    padding: 6px 12px;
+    font-size: 0.82rem;
   }
 
-  /* ---------- Insights: donut instead of bars ---------- */
   .breakdown-card #categoryBars {
     display: none;
   }
@@ -1669,8 +1649,6 @@ input:focus, select:focus {
   .donut-center strong {
     font-size: 1.15rem;
     font-weight: 700;
-    line-height: 1.2;
-    white-space: nowrap;
   }
 
   .donut-center strong.is-long {
@@ -1734,11 +1712,7 @@ input:focus, select:focus {
   .cat-shopping { --cat: var(--cat-shopping); }
   .cat-other { --cat: var(--cat-other); }
 
-  /* ---------- More tab ---------- */
-  .more-card {
-    padding: 12px;
-  }
-
+  /* More tab */
   .more-list {
     display: flex;
     flex-direction: column;
@@ -1759,13 +1733,6 @@ input:focus, select:focus {
     color: var(--text-primary);
     text-align: left;
     cursor: pointer;
-    -webkit-tap-highlight-color: transparent;
-    transition: border-color 0.15s ease, transform 0.15s ease;
-  }
-
-  .more-row:active {
-    transform: scale(0.99);
-    border-color: var(--accent-cyan);
   }
 
   .more-icon {
@@ -1824,8 +1791,16 @@ input:focus, select:focus {
     color: var(--text-muted);
   }
 
-  /* Footer: copyright only (App Info lives in the More list) */
   .app-footer .footer-links {
     display: none;
+  }
+
+  #budgetPromptModal .modal-footer-row {
+    flex-direction: column;
+  }
+
+  #budgetPromptModal .modal-footer-row .btn {
+    flex: none !important;
+    width: 100%;
   }
 }
