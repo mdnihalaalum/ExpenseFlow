@@ -643,6 +643,15 @@ form {
   flex-direction: column;
   gap: 6px;
 }
+.form-row > .form-group {
+  min-width: 0;
+}
+
+.form-row input,
+.form-row select {
+  width: 100%;
+  min-width: 0;
+}
 
 label {
   font-size: 0.8rem;
