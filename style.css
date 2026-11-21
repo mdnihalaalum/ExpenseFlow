@@ -1342,6 +1342,18 @@ input:focus, select:focus {
     justify-content: space-between;
     align-items: center;
   }
+.shortcuts-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+
+  .btn-sm {
+    min-height: 36px;
+    padding: 6px 12px;
+    font-size: 0.82rem;
+  }
 
   .icon-close-btn {
     width: 36px;
