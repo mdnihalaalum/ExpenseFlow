@@ -99,12 +99,15 @@
             <p class="subtitle">Tap once to record with today's date</p>
           </div>
         </div>
-        <button type="button" class="icon-close-btn" id="closeShortcutsBtn" aria-label="Close Shortcuts">✕</button>
+        <div class="shortcuts-header-actions">
+          <button type="button" class="btn btn-primary btn-sm" id="addNewShortcutModalBtn">+ Add</button>
+          <button type="button" class="icon-close-btn" id="closeShortcutsBtn" aria-label="Close Shortcuts">✕</button>
+        </div>
       </div>
       <div class="modal-body">
-        <!-- Inline Shortcut Editor (Hidden unless editing/creating) -->
+        <!-- Inline Shortcut Creator / Editor -->
         <div class="shortcut-editor-box hidden" id="shortcutEditorBox">
-          <h4 id="shortcutEditorTitle">Edit Shortcut</h4>
+          <h4 id="shortcutEditorTitle">New Shortcut</h4>
           <div class="form-row">
             <div class="form-group">
               <label for="scAmount">Amount (₹)</label>
@@ -193,7 +196,7 @@
 
     <!-- Phase 2: 3 Merged Summary Modules (Wallet, Spending, Payment Split) -->
     <section class="summary-three-grid" data-mtab="home insights">
-      <!-- Module 1: Wallet (Budget + Balance + Status Strip) -->
+      <!-- Module 1: Wallet (Budget Left, Balance Right) -->
       <article class="card summary-module wallet-module status-green" id="walletModule" data-mtab="home">
         <div class="card-header module-header">
           <div>
@@ -208,14 +211,14 @@
 
         <div class="module-split-two">
           <div class="stat-block">
-            <span class="metric-label">Total Balance Left</span>
-            <h2 class="metric-value" id="remainingBalanceValue">₹0</h2>
-            <span class="metric-sub" id="remainingBalanceSub">Includes prev. month rollover</span>
-          </div>
-          <div class="stat-block stat-block-right">
             <span class="metric-label">Monthly Budget</span>
             <h2 class="metric-value metric-value-secondary" id="budgetTotal">₹0</h2>
             <span class="metric-sub" id="budgetStatusSub">Click "+ Add / Edit" to add allowance</span>
+          </div>
+          <div class="stat-block stat-block-right">
+            <span class="metric-label">Total Balance Left</span>
+            <h2 class="metric-value" id="remainingBalanceValue">₹0</h2>
+            <span class="metric-sub" id="remainingBalanceSub">Includes prev. month rollover</span>
           </div>
         </div>
 
